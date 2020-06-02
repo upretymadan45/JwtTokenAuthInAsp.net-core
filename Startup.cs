@@ -15,6 +15,7 @@ using Microsoft.Extensions.Hosting;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using TokenAuthDemo.Repository;
 
 namespace TokenAuthDemo
 {
@@ -59,6 +60,8 @@ namespace TokenAuthDemo
                 };
             });
 
+            services.AddSingleton<IUserRefreshTokenRepository, UserRefreshTokenRepository>();
+
             services.AddControllersWithViews();
             services.AddRazorPages();
         }
@@ -90,6 +93,12 @@ namespace TokenAuthDemo
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+                endpoints.MapControllerRoute(
+                    name:"area",
+                    pattern:"{area:exists}/{controller=Home}/{action=Index}/{id?}"
+                );
+
                 endpoints.MapRazorPages();
             });
         }
